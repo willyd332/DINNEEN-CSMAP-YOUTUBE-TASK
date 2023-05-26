@@ -4,11 +4,12 @@ from datetime import datetime, timedelta, timezone
 
 class YouTube:
     '''
-    Description
+    A class to query the Youtube API to get videos and their related comments
     '''
     def __init__(self, api_key):
         '''
-        Description
+        Init the class with your Google Cloud API key
+        See https://cloud.google.com/apis for more information
         '''
         self.api_key = api_key
 
@@ -37,19 +38,16 @@ class YouTube:
         print(f"Request Failed: {url}")
         return None
 
-    def get_keyword_data(self, keyword, date, n = 100):
-        '''
-        Description
-
-        :param x:
-        :type x:
-
-        :returns:
-        :rtype:
-        '''
-        return
-    
     def clean_metadata(self, input_json):
+        '''
+        Cleans JSON data for use in a flat CSV file
+
+        :param input_json: A JSON dict from from the YouTube Search API
+        :type input_json: dict
+
+        :returns: A flattened dict of the relevant data
+        :rtype: dict
+        '''
         output_json = {
             "kind": input_json["id"]["kind"],
             "videoId": input_json["id"]["videoId"],
@@ -66,6 +64,15 @@ class YouTube:
     
 
     def clean_comments(self, input_json):
+        '''
+        Cleans JSON data for use in a flat CSV file
+
+        :param input_json: A JSON dict from from the YouTube CommentThreads API
+        :type input_json: dict
+
+        :returns: A flattened dict of the relevant data
+        :rtype: dict
+        '''
         output_json = {
             "kind": input_json["kind"],
             "etag": input_json["etag"],
@@ -91,7 +98,7 @@ class YouTube:
 
     def get_videos(self, keyword, date=datetime(2021, 1, 7, tzinfo=timezone.utc), n = 100):
         '''
-        Description
+        Gets videos from Youtube Search API based on a keyword and returns a DataFrame of relevant data
 
         :param keyword: The keyword to search
         :type keyword: string
@@ -121,15 +128,15 @@ class YouTube:
     
     def get_comments(self, video_ids, max = 500):
         '''
-        Description
+        Gets videos from Youtube CommentThreads API based on a list of videoIds and returns a DataFrame of relevant data
 
         :param video_ids: A list video IDs to get comments for
         :type video_ids: list
         :param max: Maximum comments to get per video (default 500)
         :type max: int
 
-        :returns:
-        :rtype:
+        :returns: Pandas DataFrame of commment data
+        :rtype: DataFrame
         '''
         base_url = f"https://www.googleapis.com/youtube/v3/commentThreads"
 
