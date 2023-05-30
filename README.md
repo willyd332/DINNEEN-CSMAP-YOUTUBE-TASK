@@ -4,13 +4,16 @@
 > Given the time constraints on this project there are features that I would have liked to implement but did not have the time to do. Additionally, there were several bugs that could not be resolved in the allotted time.
 
 ***Updates made beyond the time limit are in the `updates` branch***
+- Updated `get_videos` so that it is paginated & can query multiple days across a given timeframe
+- Updated `get_comments` so that it is paginated
+- Added a `log` function so that requests and errors are tracked with timestamps
 
 **1. Issues with nextPageToken**
   - For some reason, the API was not returning an object that included a "nextPageToken" and so the number of videos returned is limited.
   - There might have been an issue with how I was accessing the API, however, I did not have enough time to resolve this issue, and so my results are limited to the first returned page.
   - Given more time, I would have read the documentation more closely/experimented to resolve this issue.
 
-**2. Sampling Frame**
+**2. Sampling Frame** 
   - While the task asked for 100 videos and <500 comments, it did not specify the sampling frame.
   - If this were a real task, I would have made sure to understand how the researcher would like the videos to be sampled.
 
