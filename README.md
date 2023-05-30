@@ -3,6 +3,8 @@
 ## Limitations & Next Steps
 > Given the time constraints on this project there are features that I would have liked to implement but did not have the time to do. Additionally, there were several bugs that could not be resolved in the allotted time.
 
+***Updates made beyond the time limit are in the `updates` branch***
+
 **1. Issues with nextPageToken**
   - For some reason, the API was not returning an object that included a "nextPageToken" and so the number of videos returned is limited.
   - There might have been an issue with how I was accessing the API, however, I did not have enough time to resolve this issue, and so my results are limited to the first returned page.
