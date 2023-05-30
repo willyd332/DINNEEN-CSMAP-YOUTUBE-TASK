@@ -7,6 +7,7 @@
   - For some reason, the API was not returning an object that included a "nextPageToken" and so the number of videos returned is limited.
   - There might have been an issue with how I was accessing the API, however, I did not have enough time to resolve this issue, and so my results are limited to the first returned page.
   - Given more time, I would have read the documentation more closely/experimented to resolve this issue.
+> After some research, it looks like this is a common problem [For Example](https://issuetracker.google.com/issues/35177262).
 
 **2. Sampling Frame**
   - While the task asked for 100 videos and <500 comments, it did not specify the sampling frame.
@@ -38,7 +39,7 @@ The module was created on May 26, 2023 by Will Dinneen.
 The output of the function is a Pandas Dataframe which can be converted into a csv file with the following code:
 `DataFrame.to_csv('./path/to/file.csv')`
 
-The structure of the DataFrame is as follows (for more info on all values, please visit the [YouTube API Video Documentation](https://developers-dot-devsite-v2-prod.appspot.com/youtube/v3/docs/videos#snippet.liveBroadcastContent)):
+The structure of the DataFrame is as follows (for more info on all values, please visit the [YouTube API Video Documentation](https://developers-dot-devsite-v2-prod.appspot.com/youtube/v3/docs/videos)):
 - `kind`
   - Defaults to `youtube#video`
 - `videoId`
