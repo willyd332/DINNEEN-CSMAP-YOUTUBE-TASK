@@ -1,4 +1,5 @@
 import requests
+import re
 import pandas as pd
 from datetime import datetime, timedelta, timezone
 
@@ -13,12 +14,15 @@ class YouTube:
         '''
         if log_file_name is None:
             today = datetime.now().strftime("%Y-%m-%d")
-            log_file_name = f"log_{today}"
+            log_file_name = f"./logs/log_{today}"
         self.api_key = api_key
         self.log_file_name = log_file_name
 
     def log(self, message):
         log_time = datetime.now()
+        # Hide API Key
+        pattern = r'(?<=[\?|&]key=)[^&]*'
+        message = re.sub(pattern, '[API-KEY-HIDDEN]', message)
         with open(self.log_file_name + '.txt', 'a') as f:
            f.write(f"{log_time} - Message: {message}\n")
         return True
@@ -163,14 +167,23 @@ class YouTube:
 
         comment_data = []
         for video_id in video_ids:
-          params = f"?key={self.api_key}&part=snippet&maxResults={max}&videoId={video_id}&maxResults={max}"
-          this_url = base_url + params
-          data = self.http_query(this_url)
-          if data is not None and 'items' in data:
-            comment_data.extend(data['items'])
-          else:
-             print(f"Failed to retrieve comments for: {video_id} — Comments are turned off for the video.")
-             self.log(f"Failed to retrieve comments for: {video_id} — Comments are turned off for the video.")
+            this_comment_data = []
+            page_token=""
+            while True:
+                params = f"?key={self.api_key}&part=snippet&maxResults={max}&videoId={video_id}{page_token}"
+                this_url = base_url + params
+                data = self.http_query(this_url)
+                if data is not None and 'items' in data:
+                    this_comment_data.extend(data['items'])
+                else:
+                    print(f"Failed to retrieve comments for: {video_id} — Comments are turned off for the video.")
+                    self.log(f"Failed to retrieve comments for: {video_id} — Comments are turned off for the video.")
+                    break
+                if len(this_comment_data) >= max or "nextPageToken" not in data:
+                    break
+                else:
+                    page_token = "&pageToken=" + data["nextPageToken"]
+            comment_data.extend(this_comment_data)
         
         formatted_list = list(map(self.clean_comments, comment_data))
 
